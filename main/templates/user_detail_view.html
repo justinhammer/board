@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+    <div class="container">
+        <p><strong>User ID:</strong> {{ object.pk }}</p>
+            <br>
+            <br>
+        <p><strong>User Name:</strong> {{ object.user_name }}</p>
+            <br>
+            <br>
+        <p><strong>User Bio:</strong> {{ object.user_bio }}</p>
+            <br>
+            <br>
+        <img src="{{ object.user_profile_pic.url }}">
+    </div>
+
+</body>
+</html>
