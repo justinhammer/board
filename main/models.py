@@ -1,12 +1,59 @@
 from django.db import models
+from django.utils.http import urlquote
+from django.core.mail import send_mail
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.utils import timezone
 
 # Create your models here.
 
 
-class User(models.Model):
-    user_name = models.CharField(max_length=255, null=True, blank=True)
-    user_bio = models.TextField(null=True, blank=True)
-    user_profile_pic = models.ImageField(upload_to='profile_pics')
+class CustomUserManager(BaseUserManager):
+    def _create_user(self, email, username, password, is_staff, is_superuser, is_active=True, **extra_fields):
+        now = timezone.now()
 
-    def __unicode__(self):
-        return self.user_name
+        if username != None:
+            email = username
+
+        # if not email:
+        #     raise ValueError("Email must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email,
+                            is_staff=is_staff,
+                            is_active=True,
+                            is_superuser=is_superuser,
+                            last_login=now,
+                            date_joined=now,
+                            **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_user(self, email=None, username=None, password=None, **extra_fields):
+        return self._create_user(email, username, password, False, False, **extra_fields)
+
+    def create_superuser(self, username=None, password=None, email=None, **extra_fields):
+        return self._create_user(email, username, password, True, True, **extra_fields)
+
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    user_bio = models.TextField(null=True, blank=True)
+    email = models.EmailField('email address', max_length=255, unique=True)
+    is_staff = models.BooleanField('staff status', default=False)
+    is_active = models.BooleanField('active', default=True)
+    date_joined = models.DateTimeField('date joined', auto_now_add=True)
+    profile_pic = models.ImageField(upload_to="profile_pics", null=True)
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = []
+
+    class Meta:
+        verbose_name = 'user'
+        verbose_name_plural = 'users'
+
+    def get_absolute_url(self):
+        return "/users/%s/" % urlquote(self.email)
+
+    def email_user(self, subject, message, from_email=None):
+        send_mail(subject, message, from_email, [self.email])
