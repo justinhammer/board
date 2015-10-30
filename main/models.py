@@ -36,6 +36,8 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    first_name = models.CharField('first name', max_length=30, blank=True, null=True)
+    last_name = models.CharField('last name', max_length=30, blank=True, null=True)
     username = models.CharField(max_length=255, null=True, blank=True, unique=True)
     user_bio = models.TextField(null=True, blank=True)
     email = models.EmailField('email address', max_length=255, unique=True)
@@ -45,7 +47,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     profile_pic = models.ImageField(upload_to="profile_pics", null=True)
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     class Meta:
@@ -54,6 +56,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def get_absolute_url(self):
         return "/users/%s/" % urlquote(self.email)
+
+    def get_full_name(self):
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def get_short_name(self):
+        return self.first_name
 
     def email_user(self, subject, message, from_email=None):
         send_mail(subject, message, from_email, [self.email])
