@@ -8,11 +8,11 @@ from django.utils import timezone
 
 
 class CustomUserManager(BaseUserManager):
-    def _create_user(self, email, username, password, is_staff, is_superuser, is_active=True, **extra_fields):
+    def _create_user(self, email, username, password, first_name, last_name, is_staff, is_superuser, is_active=True, **extra_fields):
         now = timezone.now()
 
-        if username != None:
-            email = username
+        # if username != None:
+        #     email = username
 
         # if not email:
         #     raise ValueError("Email must be set")
@@ -28,8 +28,8 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, email=None, username=None, password=None, **extra_fields):
-        return self._create_user(email, username, password, False, False, **extra_fields)
+    def create_user(self, first_name=None, last_name=None, username=None, password=None, email=None, **extra_fields):
+        return self._create_user(email, username, password, first_name, last_name, False, False, **extra_fields)
 
     def create_superuser(self, username=None, password=None, email=None, **extra_fields):
         return self._create_user(email, username, password, True, True, **extra_fields)

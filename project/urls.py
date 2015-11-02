@@ -23,7 +23,7 @@ from main import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^user_detail_view/(?P<slug>.+)/$', views.UserDetailView.as_view()),
-
+    url(r'^user_detail_view/(?P<pk>.+)/$', views.UserDetailView.as_view()),
+    url(r'^sign_up/', 'main.views.signup', name='signup_view'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
