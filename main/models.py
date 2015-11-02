@@ -66,3 +66,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None):
         send_mail(subject, message, from_email, [self.email])
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=60)
+    created = models.DateTimeField(auto_now_add=True)
+    creator = models.ForeignKey(CustomUser, blank=True, null=True)
+
+    def __unicode__(self):
+        return unicode(self.creator) + " - " + self.title

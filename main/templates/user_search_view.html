@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Details</title>
+    <title>User Search</title>
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">User Details<br>
+                <h1 class="page-header">User Search<br>
                     <small>
                         {% if user.is_anonymous %}
                             <a href="{% url 'login_view' %}">login</a>
@@ -23,13 +23,18 @@
 
 <hr>
 
-    <div class="container">
-        <p><strong>User ID:</strong> {{ object.pk }}</p>
-        <p><strong>User Name:</strong> {{ object.username }}</p>
-        <p><strong>User Bio:</strong> {{ object.user_bio }}</p>
-        <p><strong>User Email:</strong> {{ object.email }}</p>
-        <img src="{{ object.user_profile_pic.url }}">
-    </div>
+<h1> Search For A User </h1>
+
+<form action="/user_search/" method="GET">
+    {% csrf_token %}
+    <input name="username" type="text">
+</form>
+
+<hr>
+
+{% for username in usernames %}
+    <a href="/user_detail_view/{{ username.pk }}/"> {{ username }} | </a>
+{% endfor %}
 
 </body>
 </html>

@@ -4,9 +4,10 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 from main.models import CustomUser
-from main.forms import CustomUserCreationForm
+from main.forms import CustomUserCreationForm, UserLogin
 # Create your views here.
 
 
@@ -14,6 +15,28 @@ class UserDetailView(DetailView):
     model = CustomUser
     template_name = 'user_detail_view.html'
     slug_field = 'username'
+
+
+class UserListView(ListView):
+    model = CustomUser
+    template_name = 'user_list_view.html'
+    slug_field = 'username'
+
+
+def user_search(request):
+
+    context = {}
+
+    context['request'] = request
+
+    username = request.GET.get('username', None)
+
+    if username != None:
+        usernames = CustomUser.objects.filter(username__icontains=username)
+
+        context['usernames'] = usernames
+
+    return render_to_response('user_search_view.html', context, context_instance=RequestContext(request))
 
 
 def signup(request):
@@ -51,3 +74,37 @@ def signup(request):
             context['valid'] = form.errors
 
     return render_to_response('signup.html', context, context_instance=RequestContext(request))
+
+
+def login_view(request):
+
+    context = {}
+
+    context['form'] = UserLogin()
+
+    if request.method == 'POST':
+        form = UserLogin(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
+            auth_user = authenticate(email=email, password=password)
+
+            if auth_user is not None:
+                login(request, auth_user)
+
+                return HttpResponseRedirect('/user_detail_view/%s' % auth_user.pk)
+            else:
+                context['valid'] = "Invalid User"
+
+        else:
+            context['valid'] = "Please enter a User Name"
+
+    return render_to_response('login.html', context, context_instance=RequestContext(request))
+
+
+def logout_view(request):
+
+    logout(request)
+
+    return HttpResponseRedirect('/login/')
