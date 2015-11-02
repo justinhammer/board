@@ -2,3 +2,4 @@
 media/
 project/settings.py
 .DS_Store
+project/local_settings.py
