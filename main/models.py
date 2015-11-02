@@ -68,10 +68,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email])
 
 
+class Thread(models.Model):
+    title = models.CharField(max_length=60)
+    created = models.DateTimeField(auto_now_add=True)
+    creator = models.ForeignKey(CustomUser, blank=True, null=True)
+
+
 class Post(models.Model):
     title = models.CharField(max_length=60)
     created = models.DateTimeField(auto_now_add=True)
     creator = models.ForeignKey(CustomUser, blank=True, null=True)
+    thread = models.ForeignKey(Thread, blank=True, null=True)
+    body = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return unicode(self.creator) + " - " + self.title
