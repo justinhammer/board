@@ -111,6 +111,8 @@ def logout_view(request):
 
 
 def user_edit(request, pk):
+    if request.user != CustomUser.objects.get(pk=pk):
+        return HttpResponseRedirect('/invalid_user/')
 
     context = {}
 
@@ -125,8 +127,13 @@ def user_edit(request, pk):
     if request.method == 'POST' and form.is_valid():
         form.save()
         print 'valid'
-        return HttpResponseRedirect('/user_list_view/')
+        return HttpResponseRedirect('/user_detail_view/%s' % (user.pk))
     else:
         print form.errors
 
     return render_to_response('user_edit.html', context, context_instance=RequestContext(request))
+
+
+def invalid_user(request):
+
+    return render_to_response('invalid_user.html')

@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^user_search/$', 'main.views.user_search', name='user_search'),
     url(r'^user_list/$', views.UserListView.as_view()),
     url(r'^user_edit/(?P<pk>\d+)/$','main.views.user_edit'),
+    url(r'^invalid_user/$', 'main.views.invalid_user'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -24,11 +24,19 @@
 <hr>
 
     <div class="container">
+
         <p><strong>User ID:</strong> {{ object.pk }}</p>
+
+        {% if object.profile_pic %}
+            <p><img src="{{ object.profile_pic.url }}"> </p> 
+        {% endif %}
+
         <p><strong>User Name:</strong> {{ object.username }}</p>
-        <p><strong>User Bio:</strong> {{ object.user_bio }}</p>
         <p><strong>User Email:</strong> {{ object.email }}</p>
-        <img src="{{ object.user_profile_pic.url }}">
+        <p><strong>User Bio:</strong> {{ object.user_bio }}</p>
+        
+        <p><a href="/user_edit/{{ object.pk }}">Edit Your Profile</a>
+
     </div>
 
 </body>

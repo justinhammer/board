@@ -6,29 +6,12 @@
 </head>
 <body>
 
-
 {% load crispy_forms_tags %}
 <form enctype="multipart/form-data" action="." method="post">
     {% csrf_token %}
     {{ form|crispy }}
     <input type="submit" value="Submit" class="btn btn-success">
 </form>
-   <!-- <div class="container">
-
-        <div class="row">
-
-            <div class="col-md-6 col-sm-6 col-md-offset-3 col-sm-offset-3" style="color:black;">
-                
-                    <form action="/user_edit/{{ pk }}/" method="post">
-                        {% csrf_token %} 
-                            <input type='submit' value='Submit' />
-                    
-                    </form>
-            </div>
-
-        </div>
-
-    </div> -->
 
 </body>
 </html>
