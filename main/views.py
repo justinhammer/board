@@ -7,7 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from main.models import CustomUser
-from main.forms import CustomUserCreationForm, UserLogin
+from main.forms import CustomUserCreationForm, UserLogin, UserEditForm
 # Create your views here.
 
 
@@ -108,3 +108,25 @@ def logout_view(request):
     logout(request)
 
     return HttpResponseRedirect('/login/')
+
+
+def user_edit(request, pk):
+
+    context = {}
+
+    user = CustomUser.objects.get(pk=pk)
+
+    form = UserEditForm(request.POST or None, request.FILES or None, instance=user)
+
+    context['user'] = user
+    context['form'] = form
+    context['pk'] = pk
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        print 'valid'
+        return HttpResponseRedirect('/user_list_view/')
+    else:
+        print form.errors
+
+    return render_to_response('user_edit.html', context, context_instance=RequestContext(request))

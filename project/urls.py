@@ -24,10 +24,11 @@ from main import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user_detail_view/(?P<pk>.+)/$', views.UserDetailView.as_view()),
-    url(r'^sign_up/', 'main.views.signup', name='signup_view'),
-    url(r'^login/', 'main.views.login_view', name='login_view'),
-    url(r'^logout/', 'main.views.logout_view', name='logout_view'),
-    url(r'^user_search/', 'main.views.user_search', name='user_search'),
-    url(r'^user_list/', views.UserListView.as_view()),
+    url(r'^sign_up/$', 'main.views.signup', name='signup_view'),
+    url(r'^login/$', 'main.views.login_view', name='login_view'),
+    url(r'^logout/$', 'main.views.logout_view', name='logout_view'),
+    url(r'^user_search/$', 'main.views.user_search', name='user_search'),
+    url(r'^user_list/$', views.UserListView.as_view()),
+    url(r'^user_edit/(?P<pk>\d+)/$','main.views.user_edit'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

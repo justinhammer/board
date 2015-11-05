@@ -73,6 +73,9 @@ class Thread(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     creator = models.ForeignKey(CustomUser, blank=True, null=True)
 
+    def __unicode__(self):
+        return unicode(self.title)
+
 
 class Post(models.Model):
     title = models.CharField(max_length=60)
