@@ -83,6 +83,14 @@ class Post(models.Model):
     creator = models.ForeignKey(CustomUser, blank=True, null=True)
     thread = models.ForeignKey(Thread, blank=True, null=True)
     body = models.TextField(null=True, blank=True)
+    upvotes = models.ManyToManyField('main.CustomUser', related_name='up_votes')
+    downvotes = models.ManyToManyField('main.CustomUser', related_name='down_votes')
+    
+    def total_votes(self):
+        total_votes = len(self.upvotes) - len(self.downvotes)
+        return total_votes
 
     def __unicode__(self):
         return unicode(self.creator) + " - " + self.title
+
+    

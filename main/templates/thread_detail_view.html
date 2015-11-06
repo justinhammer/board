@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Thread Detail</title>
+</head>
+<body>
+
+    <div class="container">
+
+        <p><strong>Title:</strong> {{object.title}}</p>
+        <p><strong>Created By:</strong> <a href="/user_detail_view/{{ object.creator.pk }}">{{ object.creator }}</a></p>
+        <p><strong>Created On:</strong> {{ object.created }}</p>
+        <hr>
+
+        {% for object in objects.post.title %}
+            <a href="/post_detail/{{ objects.post.pk }}">{{ object.post.title }}</a>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

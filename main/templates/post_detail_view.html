@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Detail</title>
+</head>
+<body>
+
+    <div class="container">
+
+        <p><strong>Thread:</strong> <a href="/thread_detail/{{ object.thread.pk }}">{{ object.thread }}</a></p>
+        <p><strong>Title:</strong> {{ object.title }}</p>
+        <p><strong>Created By:</strong> <a href="/user_detail_view/{{ object.creator.pk }}">{{ object.creator }}</a></p>
+        <p><strong>Created On:</strong> {{ object.created }}</p>
+        <hr>
+        <p>{{ object.body }}</p>
+        <hr>
+
+    </div>
+
+</body>
+</html>

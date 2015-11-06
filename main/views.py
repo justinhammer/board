@@ -6,7 +6,7 @@ from django.db import IntegrityError
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from main.models import CustomUser
+from main.models import CustomUser, Thread, Post
 from main.forms import CustomUserCreationForm, UserLogin, UserEditForm
 # Create your views here.
 
@@ -21,6 +21,30 @@ class UserListView(ListView):
     model = CustomUser
     template_name = 'user_list_view.html'
     slug_field = 'username'
+
+
+class ThreadDetailView(DetailView):
+    model = Thread
+    template_name = 'thread_detail_view.html'
+    slug_field = 'title'
+
+
+class ThreadListView(ListView):
+    model = Thread
+    template_name = 'thread_list_view.html'
+    slug_field = 'title'
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'post_detail_view.html'
+    slug_field = 'title'
+
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'post_list_view.html'
+    slug_field = 'title'
 
 
 def user_search(request):

@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from main.models import CustomUser
+from main.models import CustomUser, Thread, Post
 from main import views
 
 urlpatterns = [
@@ -31,5 +31,9 @@ urlpatterns = [
     url(r'^user_list/$', views.UserListView.as_view()),
     url(r'^user_edit/(?P<pk>\d+)/$','main.views.user_edit'),
     url(r'^invalid_user/$', 'main.views.invalid_user'),
+    url(r'^thread_detail/(?P<pk>.+)/$', views.ThreadDetailView.as_view()),
+    url(r'^thread_list/$', views.ThreadListView.as_view()),
+    url(r'^post_detail/(?P<pk>.+)/$', views.PostDetailView.as_view()),
+    url(r'^post_list/$', views.PostListView.as_view()),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

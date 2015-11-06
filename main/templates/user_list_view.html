@@ -24,7 +24,7 @@
 <hr>
 
 {% for object in object_list %}
-    {{ object.username }}<br>
+    <a href="/user_detail_view/{{ object.pk }}">{{ object.username }}</a><br>
 {% endfor %}
 
 </body>
