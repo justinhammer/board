@@ -3,6 +3,7 @@ from django.utils.http import urlquote
 from django.core.mail import send_mail
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
+from django.db.models.signals import m2m_changed
 
 # Create your models here.
 
@@ -85,12 +86,35 @@ class Post(models.Model):
     body = models.TextField(null=True, blank=True)
     upvotes = models.ManyToManyField('main.CustomUser', related_name='up_votes')
     downvotes = models.ManyToManyField('main.CustomUser', related_name='down_votes')
-    
+    upvotes_count = models.IntegerField(default=0, null=True, blank=True)
+    downvotes_count = models.IntegerField(default=0, null=True, blank=True)
+    votes = models.IntegerField(null=True, blank=True)
+
+    @property
     def total_votes(self):
-        total_votes = len(self.upvotes) - len(self.downvotes)
+        total_votes = self.upvotes_count - self.downvotes_count
         return total_votes
 
     def __unicode__(self):
         return unicode(self.creator) + " - " + self.title
 
-    
+
+def recount_up(sender, instance, **kwargs):
+    instance.upvotes_count = instance.upvotes.count()
+    instance.save()
+
+    instance.votes = instance.upvotes_count - instance.downvotes_count
+    instance.save()
+
+m2m_changed.connect(recount_up, sender=Post.upvotes.through)
+
+
+def recount_down(sender, instance, **kwargs):
+    instance.downvotes_count = instance.downvotes.count()
+    instance.save()
+
+    instance.votes = instance.upvotes_count - instance.downvotes_count
+
+    instance.save()
+
+m2m_changed.connect(recount_down, sender=Post.downvotes.through)

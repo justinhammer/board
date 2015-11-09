@@ -5,5 +5,14 @@
 </head>
 <body>
 
+<h1>List of Threads</h1>
+
+    {% for object in object_list %}
+
+        <a href="/thread_detail/{{ object.pk }}">{{ object.title }}</a><br>
+        <hr>
+
+    {% endfor %}
+
 </body>
 </html>

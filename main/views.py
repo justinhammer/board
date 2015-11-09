@@ -39,9 +39,11 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'post_detail_view.html'
     slug_field = 'title'
+    #How do I order by something when I'm using a class based view
 
 
 class PostListView(ListView):
+    queryset = Post.objects.all().order_by('-votes')
     model = Post
     template_name = 'post_list_view.html'
     slug_field = 'title'
@@ -161,3 +163,37 @@ def user_edit(request, pk):
 def invalid_user(request):
 
     return render_to_response('invalid_user.html')
+
+
+def vote(request, pk):
+
+    vote_type = request.GET.get('vote_type', None)
+
+    user = CustomUser.objects.get(pk=request.user.pk)
+
+    post = Post.objects.get(pk=pk)
+
+    print "hit 1"
+
+    if vote_type == 'up':
+        if user in post.downvotes.all():
+            post.downvotes.remove(user)
+
+        post.upvotes.add(user)
+
+        print post.upvotes.all().count()
+
+        print "hit up"
+
+    if vote_type == 'down':
+        if user in post.upvotes.all():
+            post.upvotes.remove(user)
+
+        post.downvotes.add(user)
+
+        print post.downvotes.all().count()
+
+        print "hit down"
+
+    return HttpResponseRedirect('/post_list/')
+        # 'UpVote: %s, DownVotes: %s' % (post.upvotes.all().count(), post.downvotes.all().count()))

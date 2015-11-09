@@ -5,5 +5,14 @@
 </head>
 <body>
 
+{% for object in object_list %}
+
+    <a href="/post_detail/{{ object.pk }}">{{ object.title }}</a> Score ({{ object.votes }})<br>
+    <a href="/vote/{{ object.pk }}/?vote_type=up">Vote Up ( {{ object.upvotes_count }} )</a> |
+    <a href="/vote/{{ object.pk }}/?vote_type=down">Vote Down ( {{ object.downvotes_count }} )</a>
+    <hr>
+
+{% endfor %}
+
 </body>
 </html>

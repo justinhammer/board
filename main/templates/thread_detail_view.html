@@ -12,8 +12,8 @@
         <p><strong>Created On:</strong> {{ object.created }}</p>
         <hr>
 
-        {% for object in objects.post.title %}
-            <a href="/post_detail/{{ objects.post.pk }}">{{ object.post.title }}</a>
+        {% for post in object.post_set.all %}
+            <a href="/post_detail/{{ post.pk }}">{{ post.title }}</a> <br>
         {% endfor %}
     </div>
 

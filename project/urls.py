@@ -35,5 +35,6 @@ urlpatterns = [
     url(r'^thread_list/$', views.ThreadListView.as_view()),
     url(r'^post_detail/(?P<pk>.+)/$', views.PostDetailView.as_view()),
     url(r'^post_list/$', views.PostListView.as_view()),
+    url(r'^vote/(?P<pk>\d+)/$', 'main.views.vote')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
